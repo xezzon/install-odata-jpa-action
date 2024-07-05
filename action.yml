@@ -1,0 +1,26 @@
+name: 'Install odata-jpa'
+description: 'Install com.sap.olingo:odata-jpa'
+inputs:
+  version:
+    description: 'The version of com.sap.olingo:odata-jpa'
+    required: true
+    default: '2.0.0'
+  java-version:
+    description: 'The version of Temurin OpenJDK'
+    required: false
+    default: 17
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+      with: 
+        repository: SAP/olingo-jpa-processor-v4
+        ref: refs/tags/${{ inputs.version }}
+    - name: Set up JDK ${{ inputs.java-version }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ inputs.java-version }}
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      run: cd ./jpa && mvn -DskipTests=true clean install
