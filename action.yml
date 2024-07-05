@@ -23,4 +23,5 @@ runs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
+      shell: bash
       run: cd ./jpa && mvn -DskipTests=true clean install
